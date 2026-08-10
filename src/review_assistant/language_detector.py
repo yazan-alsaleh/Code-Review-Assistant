@@ -38,7 +38,7 @@ class LanguageDetector:
             r"\bif\s+__name__\s*==\s*[\"']__main__[\"']"
         ]
 
-        return any(re.search(patterns, code) for pattern in patterns)
+        return any(re.search(pattern, code) for pattern in patterns)
         # Means: Search the code for each pattern. If at least one pattern is found, return True.
 
     
