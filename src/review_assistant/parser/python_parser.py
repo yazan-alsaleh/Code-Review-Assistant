@@ -7,7 +7,7 @@ from .base_parser import BaseParser
 
 
 
-class BaseParser(BaseParser):
+class PythonParser(BaseParser):
 
     def parse(self, code):
 
