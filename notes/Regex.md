@@ -1,4 +1,5 @@
-Regex (short for regular expression) is a pattern used to search, match, and manipulate text.
+# Regex 
+(short for regular expression) is a pattern used to search, match, and manipulate text.
 
 For example
 
