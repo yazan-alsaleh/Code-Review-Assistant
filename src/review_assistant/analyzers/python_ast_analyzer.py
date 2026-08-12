@@ -18,7 +18,8 @@ class PythonASTAnalyzer: # This class will be responsible for analyzing a Python
             "variables": [],
             "loops": [],
             "conditions": [],
-            "function_calls": []
+            "function_calls": [],
+            "name_usage": [] # used variables and modules 
         }
 
 
@@ -110,10 +111,21 @@ class PythonASTAnalyzer: # This class will be responsible for analyzing a Python
 
 
 
-
+                # for modules that are accessed using .
                 elif isinstance(node.func, ast.Attribute):
                     result["function_calls"].append({
                         "name": node.func.attr,
+                        "line": node.lineno
+                    })
+
+
+
+            elif isinstance(node, ast.Name):
+                if isinstance(node.ctx, ast.Load): # because we want the used part we use node.ctx (context)
+                    # it tells python is this name being used/read, or is it being assigned to?
+                    # for detecting unused imports, we care about actually used so use Load
+                    result["name_usage"].append({
+                        "name": node.id,
                         "line": node.lineno
                     })
 
