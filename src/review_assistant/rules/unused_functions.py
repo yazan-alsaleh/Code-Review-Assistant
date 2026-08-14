@@ -1,7 +1,5 @@
 # this file will has the unused functions in the source code
 
-
-
 def check_unused_functions(ast_result):
 
     findings = []

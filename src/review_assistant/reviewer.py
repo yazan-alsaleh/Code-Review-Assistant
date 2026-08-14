@@ -2,20 +2,32 @@
 
 from .rules.unused_imports import check_unused_imports
 from .rules.unused_variables import check_unused_variables
+from .rules.unused_functions import check_unused_functions
 
 
 class Reviewer:
 
-    def review(self, ast_result):
+    def __init__(self):
 
-        findings = [] # this array will store all problems in the code
+        self.rules = [ # a list with functions, then we will go through the list one function at a time.
+            check_unused_imports,
+            check_unused_variables,
+            check_unused_functions
+        ]
 
-        findings.extend(check_unused_imports(ast_result)) # extend means Add all the items from another list 
-        #into this list. Because in the check_unused_imports we are already returning array / list and so other rules.
+    def review(self, ast_result): # This method receives the result from your AST analyzer.
+    # The reviewer takes the AST analyzer information and runs your rules against it.
 
-        findings.extend(check_unused_variables(ast_result)) # to check unused variables
+        findings = [] # this array will store all problems in the source code
 
+        for rule in self.rules: # Go through every review rule that I have registered (each iteration will check a rule).
+            
+            findings.extend(rule(ast_result)) 
+            # 1- rule contains a function, you're calling that function, example: check_unused_imports(ast_result)
+            # 2- extend means add all the items from another list into this list.
+            # Because in the check_unused_imports for example we are already returning array / list and so other rules.
         return findings
 
 
+        
 
