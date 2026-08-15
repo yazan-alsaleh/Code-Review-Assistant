@@ -1,5 +1,9 @@
 # Code Review Assistant
 
+## 🏗️ System Architecture
+
+An intelligent code review assistant that analyzes source code, detects common issues, and provides structured, actionable findings.
+
 ```mermaid
 flowchart TB
 
