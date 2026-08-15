@@ -2,25 +2,19 @@ from src.review_assistant.parser.python_parser import PythonParser
 from src.review_assistant.analyzers.python_ast_analyzer import PythonASTAnalyzer
 
 code = """
-import math
-import pandas
+def calculate(x, y):
 
-x = 10
-name = "Yazan"
+    if x > 10:
+        print(x)
 
+    if y > 20:
+        print(y)
 
-class Calculator:
+    for i in range(x):
+        print(i)
 
-    def calculate(self, value):
-
-        if value > 5:
-            return math.sqrt(value)
-
-        return value
-
-
-for i in range(10):
-    print(i)
+    while x > 0:
+        x -= 1
 """
 
 

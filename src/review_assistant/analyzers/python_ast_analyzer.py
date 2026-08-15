@@ -5,6 +5,27 @@ import ast # We need ast because you're going to work with AST node types like: 
 # These represent different pieces of Python code.
 
 
+
+def calculate_complexity(function_node): # function_node: AST node representing a function.
+
+        # Every function starts with a complexity of 1.
+        # Because even a function with no decisions has one basic execution path.
+        complexity = 1 
+
+        for node in ast.walk(function_node): # go through all nodes inside the function
+
+            # If the AST node has any of thses:
+            if isinstance(node, (ast.If, ast.For, ast.While, ast.ExceptHandler)):
+                complexity += 1 # Increase complexity by one 
+
+            elif isinstance(node, ast.BoolOp): # BoolOp means: (and) or (or)
+                complexity += len(node.values) - 1 # if there are 2 values, we will do values - 1 to add one complexity not 2
+
+        return complexity
+
+
+
+
 class PythonASTAnalyzer: # This class will be responsible for analyzing a Python AST.
 
     def analyze(self, tree):
@@ -31,7 +52,8 @@ class PythonASTAnalyzer: # This class will be responsible for analyzing a Python
                 "name": node.name,
                 "line": node.lineno,
                 "end_line": node.end_lineno,
-                "parameters": [arg.arg for arg in node.args.args]
+                "parameters": [arg.arg for arg in node.args.args],
+                "complexity": calculate_complexity(node)
                 }) 
 
 
@@ -80,15 +102,23 @@ class PythonASTAnalyzer: # This class will be responsible for analyzing a Python
 
 
             # Either loops
-            elif isinstance(node, (ast.For, ast.While)):
+            elif isinstance(node, (ast.For)):
                 result["loops"].append({
-                    "type": type(node).__name__,
+                    "type": "For",
                     "line": node.lineno,
                     "target": ast.unparse(node.target),
                     "iterable": ast.unparse(node.iter)
                 })
 
 
+
+            elif isinstance(node, (ast.While)):
+                result["loops"].append({
+                    "type": "While",
+                    "line": node.lineno,
+                    "condition": ast.unparse(node.test)
+                })
+            
             
 
             elif isinstance(node, ast.If):
@@ -130,4 +160,3 @@ class PythonASTAnalyzer: # This class will be responsible for analyzing a Python
                     })
 
         return result
-
