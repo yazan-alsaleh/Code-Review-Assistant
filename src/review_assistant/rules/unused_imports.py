@@ -1,5 +1,6 @@
 # this file will has the unused imports in the source code
 
+from ..finding import Finding
 
 def check_unused_imports(ast_result):
 
@@ -19,15 +20,18 @@ def check_unused_imports(ast_result):
         name = imported["name"] # get the name of the imported library
 
         if name not in used_names:
-            findings.append({
-                "rule": "unused-import",
-                "line": imported["line"],
-                "message": f"'{name}' is imported but never used."
-            })
+            findings.append(
+                Finding(
+                    rule="unused-import",
+                    message=f"Import '{name}' is never used.",
+                    line=imported["line"],
+                    severity="warning",
+                    category="quality"
+                )
+            )
 
     return findings
     
-
 
 
 

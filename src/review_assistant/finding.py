@@ -6,9 +6,9 @@ class Finding:
 
     def __init__(self, rule, message, line, severity = "warning", category="quality"):
 
-        self.rule = rule,
-        self.message = message,
-        self.line = line,
+        self.rule = rule
+        self.message = message
+        self.line = line
         self.severity = severity
         self.category = category
 

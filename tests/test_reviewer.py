@@ -37,7 +37,7 @@ print(result)
     print("\nFINDINGS:")
 
     for finding in findings:
-        print(finding)
+        print(finding.to_dict())
 
 
 if __name__ == "__main__":

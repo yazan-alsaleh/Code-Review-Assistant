@@ -1,5 +1,6 @@
 # this file will has the unused variables in the source code
 
+from ..finding import Finding
 
 def check_unused_variables(ast_result):
 
@@ -18,11 +19,15 @@ def check_unused_variables(ast_result):
 
         if name not in used_names:
 
-            findings.append({
-                "rule": "unused-variable",
-                "message": f"Variable '{name}' is assigned but never used.",
-                "line": variable["line"]
-            })
+            findings.append(
+                Finding( # Create an object from Finding class
+                    rule = "unused-variable",
+                    message = f"Variable '{name}' is assigned but never used.",
+                    line=variable["line"],
+                    severity="warning",
+                    category="quality"
+                )
+            )
 
     return findings
 

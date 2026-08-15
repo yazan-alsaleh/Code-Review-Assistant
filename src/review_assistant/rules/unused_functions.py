@@ -1,5 +1,7 @@
 # this file will has the unused functions in the source code
 
+from ..finding import Finding
+
 def check_unused_functions(ast_result):
 
     findings = []
@@ -26,11 +28,14 @@ def check_unused_functions(ast_result):
 
         if name not in used_names:
 
-            findings.append({
-                "rule": "unused-function",
-                "message": f"Function '{name}' is defined but never used.",
-                "line": my_function["line"]
-            })
+            findings.append(
+                Finding(
+                    rule="unused-function",
+                    message=f"Function '{name}' is defined but never used.",
+                    line=my_function["line"],
+                    severity="warning",
+                    category="quality"
+            ))
 
     return findings
 
