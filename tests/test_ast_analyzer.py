@@ -5,32 +5,12 @@ from src.review_assistant.reviewer import Reviewer
 def test_complexity_code():
 
     code = """
-import math
+import os
 
-unused_variable = 10
-
-def unused_function():
-    pass
-
-def calculate(x, y):
-    if x > 0:
-        if y > 0:
-            if x > y:
-                print("A")
-            else:
-                print("B")
-        else:
-            print("C")
-    else:
-        print("D")
-
-    for i in range(x):
-        print(i)
-
-    while y > 0:
-        y -= 1
-
-    return x + y
+def test():
+    eval("print('hello')")
+    exec("x = 10")
+    os.system("dir")
 """
 
 
