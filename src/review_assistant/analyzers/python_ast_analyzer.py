@@ -24,14 +24,12 @@ def calculate_complexity(function_node): # function_node: AST node representing 
         return complexity
 
 
-
-
 class PythonASTAnalyzer: # This class will be responsible for analyzing a Python AST.
 
     def analyze(self, tree):
         # tree is the AST returned by the parser
 
-        # This is where we will store everything we discover.
+        # This dictionary is where we will store everything we discover.
         result = {
             "functions": [],
             "classes": [],
@@ -53,9 +51,10 @@ class PythonASTAnalyzer: # This class will be responsible for analyzing a Python
                 "line": node.lineno,
                 "end_line": node.end_lineno,
                 "parameters": [arg.arg for arg in node.args.args],
-                "complexity": calculate_complexity(node)
-                }) 
-
+                "complexity": calculate_complexity(node),
+                "body": self._normalize_function_body(node) 
+                # _normalize_function_body --> processes the function body into a consistent format.
+                })
 
 
 
@@ -160,3 +159,18 @@ class PythonASTAnalyzer: # This class will be responsible for analyzing a Python
                     })
 
         return result
+
+
+    def _normalize_function_body(self, node):
+
+        body = [] # Creates an empty list to store the function's statement / content
+
+        for statement in node.body:
+            # Loops through every statement inside the function
+            body.append(ast.dump(statement, annotate_fields = False))
+            # 1- Python's AST stores a statement as a structured object
+            # 2- ast.dump() converts that object into text
+            # 3- append() puts that text into the body list.
+
+
+

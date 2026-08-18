@@ -5,6 +5,7 @@ from .rules.unused_variables import check_unused_variables
 from .rules.unused_functions import check_unused_functions
 from .rules.complexity import check_complexity
 from .rules.long_functions import check_long_functions
+from .rules.duplicate_functions import check_duplicate_function
 
 class Reviewer:
 
@@ -15,7 +16,8 @@ class Reviewer:
             check_unused_variables,
             check_unused_functions,
             check_complexity,
-            check_long_functions
+            check_long_functions,
+            check_duplicate_function
         ]
 
     def review(self, ast_result): # This method receives the result from your AST analyzer.
