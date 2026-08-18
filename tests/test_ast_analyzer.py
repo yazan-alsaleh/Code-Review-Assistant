@@ -1,39 +1,51 @@
 from src.review_assistant.parser.python_parser import PythonParser
 from src.review_assistant.analyzers.python_ast_analyzer import PythonASTAnalyzer
-from src.review_assistant.rules.complexity import check_complexity
+from src.review_assistant.reviewer import Reviewer
 
 def test_complexity_code():
 
     code = """
+import math
+
+unused_variable = 10
+
+def unused_function():
+    pass
+
 def calculate(x, y):
-
-    if x > 10:
-        print(x)
-
-    if y > 20:
-        print(y)
+    if x > 0:
+        if y > 0:
+            if x > y:
+                print("A")
+            else:
+                print("B")
+        else:
+            print("C")
+    else:
+        print("D")
 
     for i in range(x):
         print(i)
 
-    while x > 0:
-        x -= 1
+    while y > 0:
+        y -= 1
+
+    return x + y
 """
 
 
     parser = PythonParser()
-
     tree = parser.parse(code)
-    print("AST:")
-
 
     analyzer = PythonASTAnalyzer()
     ast_result = analyzer.analyze(tree)
 
-    findings = check_complexity(ast_result)
-
     print("AST RESULT:")
     print(ast_result)
+
+    reviewer = Reviewer()
+
+    findings = reviewer.review(ast_result)
 
     print("\nFINDINGS:")
 

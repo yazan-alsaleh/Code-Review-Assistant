@@ -12,6 +12,13 @@ class Finding:
         self.severity = severity
         self.category = category
 
+    def __str__(self):
+        return (
+            f"[{self.severity.upper()}] "
+            f"{self.rule} | Line {self.line} | "
+            f"{self.message}"
+        )
+
     # Instead of every rule creating its own dictionary, now we have one standard format.
     # Every rule creates a Finding object.
     def to_dict(self): 
