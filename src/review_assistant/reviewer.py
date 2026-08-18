@@ -3,6 +3,7 @@
 from .rules.unused_imports import check_unused_imports
 from .rules.unused_variables import check_unused_variables
 from .rules.unused_functions import check_unused_functions
+from .rules.complexity import check_complexity
 
 
 class Reviewer:
@@ -12,7 +13,8 @@ class Reviewer:
         self.rules = [ # a list with functions, then we will go through the list one function at a time.
             check_unused_imports,
             check_unused_variables,
-            check_unused_functions
+            check_unused_functions,
+            check_complexity
         ]
 
     def review(self, ast_result): # This method receives the result from your AST analyzer.

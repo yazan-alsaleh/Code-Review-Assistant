@@ -12,7 +12,6 @@ class Finding:
         self.severity = severity
         self.category = category
 
-
     # Instead of every rule creating its own dictionary, now we have one standard format.
     # Every rule creates a Finding object.
     def to_dict(self): 
