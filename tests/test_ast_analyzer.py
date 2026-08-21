@@ -6,11 +6,14 @@ def test_complexity_code():
 
     code = """
 import os
+import subprocess
 
 def test():
     eval("print('hello')")
     exec("x = 10")
     os.system("dir")
+    subprocess.call(["dir"])
+    subprocess.run("dir", shell=True)
 """
 
 

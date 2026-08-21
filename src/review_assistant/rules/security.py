@@ -17,6 +17,7 @@ def check_security(ast_result):
         "subprocess.run": "Use of subprocess.run() may be dangerous when used with shell = True."
     }
 
+    print("FUNCTION CALLS:", ast_result["function_calls"])
 
 
     for call in ast_result.get("function_calls", []): # for each function call from in the code

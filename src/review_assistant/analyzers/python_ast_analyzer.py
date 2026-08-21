@@ -130,22 +130,13 @@ class PythonASTAnalyzer: # This class will be responsible for analyzing a Python
 
 
 
-
+            # for modules that are accessed using .
             elif isinstance(node, ast.Call):
-                if isinstance(node.func, ast.Name):
-                    result["function_calls"].append({
-                        "name": node.func.id, # id gives the function name
-                        "line": node.lineno
-                    })
+                result["function_calls"].append({
+                    "name": self._get_call_name(node.func),
+                    "line": node.lineno
+                })
 
-
-
-                # for modules that are accessed using .
-                elif isinstance(node.func, ast.Attribute):
-                    result["function_calls"].append({
-                        "name": node.func.attr,
-                        "line": node.lineno
-                    })
 
 
 
@@ -174,3 +165,19 @@ class PythonASTAnalyzer: # This class will be responsible for analyzing a Python
 
 
 
+    def _get_call_name(self, node):
+
+            # Case 1: Simple function: print(), eval(), exec()
+            if isinstance(node, ast.Name):
+                return node.id
+
+            # Case 2: Function with dot: os.system(), subprocess.run(), math is value and sqrt is attribute
+            if isinstance(node, ast.Attribute):
+                if isinstance(node.value, ast.Name):
+                    return f"{node.value.id}.{node.attr}"
+
+                return node.attr # If the call is an attribute but is more complex, it returns just the last part.
+
+            return None
+
+    
