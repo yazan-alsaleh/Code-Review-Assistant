@@ -93,8 +93,9 @@ class PythonASTAnalyzer: # This class will be responsible for analyzing a Python
                 for target in node.targets:
                     if isinstance(target, ast.Name): # target is the variable (x)
                         result["variables"].append({  # target.id gives (x) and store it
-                            "name": target.id,
-                            "line": node.lineno,
+                            "name": target.id, # the variable name
+                            "line": node.lineno, # the variable line
+                            
                         })
 
 

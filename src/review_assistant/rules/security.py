@@ -52,3 +52,47 @@ def check_security(ast_result):
     return findings
 
 
+def check_hardcoded_secrets(ast_result):
+
+    findings = []
+
+    secret_keywords = [ # words / variables that might have a secret value
+        "password",
+        "passwd",
+        "pwd",
+        "secret",
+        "api_key",
+        "apikey",
+        "token",
+        "access_token",
+        "auth_token",
+        "private_key",
+        "client_secret"
+    ]
+
+
+    for variable in ast_result["variables"]: # for each variable in the code
+        name = variable["name"] # get the variable name
+
+        for keyword in secret_keywords: # for each keyword in secret_keywords
+
+            if keyword in name.lower(): # to check if they match. in used to check whether one string exists inside another string.
+                # so even if part of the keyword exits in name it will be detected like: "password" and "user_password"
+
+                if isinstance(variable.get("value"), str):
+
+                    findings.append(
+                        Finding(
+                            rule = "security-hardcoded-secret",
+                            message = f"Possible hardcoded secret found in variable '{name}'",
+                            line = variable["line"],
+                            severity = "error",
+                            category = "security" 
+                        )
+                    )
+
+    return findings
+
+
+
+
