@@ -6,19 +6,11 @@ from src.review_assistant.reviewer import Reviewer
 def test_reviewer():
 
     code = """
-import math
-
-def calculate(x):
-    return x * 2
-
-def unused_function():
-    print("Hello")
-
-unused_variable = 100
-
-result = calculate(5)
-
-print(result)
+API_KEY = "123456"
+password = "myPassword"
+name = "Yazan"
+age = 22
+API_KEY_2 = get_api_key()
 """
 
     parser = PythonParser()

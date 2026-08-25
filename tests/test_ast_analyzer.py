@@ -1,44 +1,31 @@
 from src.review_assistant.parser.python_parser import PythonParser
 from src.review_assistant.analyzers.python_ast_analyzer import PythonASTAnalyzer
-from src.review_assistant.reviewer import Reviewer
+from src.review_assistant.rules.security import check_hardcoded_secrets
 
-def test_complexity_code():
+
+def test_hardcoded_secrets():
 
     code = """
-import os
-import subprocess
-
-def test():
-    eval("print('hello')")
-    exec("x = 10")
-    os.system("dir")
-    subprocess.call(["dir"])
-    subprocess.run("dir", shell=True)
+API_KEY = "123456"
+password = "myPassword"
+name = "Yazan"
+age = 22
+API_KEY_2 = get_api_key()
 """
-
 
     parser = PythonParser()
     tree = parser.parse(code)
 
     analyzer = PythonASTAnalyzer()
-    ast_result = analyzer.analyze(tree)
+    result = analyzer.analyze(tree)
 
-    print("AST RESULT:")
-    print(ast_result)
+    findings = check_hardcoded_secrets(result)
 
-    reviewer = Reviewer()
-
-    findings = reviewer.review(ast_result)
-
-    print("\nFINDINGS:")
+    print("FINDINGS:")
 
     for finding in findings:
         print(finding)
 
 
 if __name__ == "__main__":
-    test_complexity_code()
-
-
-
-
+    test_hardcoded_secrets()

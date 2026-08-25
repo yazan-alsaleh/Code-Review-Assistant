@@ -7,6 +7,7 @@ from .rules.complexity import check_complexity
 from .rules.long_functions import check_long_functions
 from .rules.duplicate_functions import check_duplicate_functions
 from .rules.security import check_security
+from .rules.security import check_hardcoded_secrets
 
 class Reviewer:
 
@@ -19,7 +20,8 @@ class Reviewer:
             check_complexity,
             check_long_functions,
             check_duplicate_functions,
-            check_security
+            check_security,
+            check_hardcoded_secrets
         ]
 
     def review(self, ast_result): # This method receives the result from your AST analyzer.

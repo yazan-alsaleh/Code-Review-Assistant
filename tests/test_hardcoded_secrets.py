@@ -1,6 +1,6 @@
 from src.review_assistant.parser.python_parser import PythonParser
 from src.review_assistant.analyzers.python_ast_analyzer import PythonASTAnalyzer
-
+from src.review_assistant.rules.security import check_hardcoded_secrets
 
 def test_variable_values():
 
