@@ -6,8 +6,7 @@ from .rules.unused_functions import check_unused_functions
 from .rules.complexity import check_complexity
 from .rules.long_functions import check_long_functions
 from .rules.duplicate_functions import check_duplicate_functions
-from .rules.security import check_security
-from .rules.security import check_hardcoded_secrets
+from .rules.security import check_hardcoded_secrets, check_security, check_sql_injection
 
 class Reviewer:
 
@@ -21,7 +20,8 @@ class Reviewer:
             check_long_functions,
             check_duplicate_functions,
             check_security,
-            check_hardcoded_secrets
+            check_hardcoded_secrets,
+            check_sql_injection
         ]
 
     def review(self, ast_result): # This method receives the result from your AST analyzer.

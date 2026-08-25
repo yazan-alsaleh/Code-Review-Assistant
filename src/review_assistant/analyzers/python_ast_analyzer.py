@@ -155,7 +155,8 @@ class PythonASTAnalyzer: # This class will be responsible for analyzing a Python
             elif isinstance(node, ast.Call):
                 result["function_calls"].append({
                     "name": self._get_call_name(node.func),
-                    "line": node.lineno
+                    "line": node.lineno,
+                    "node": node
                 })
 
 

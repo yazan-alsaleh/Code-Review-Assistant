@@ -1,6 +1,10 @@
 # This file is about the security of the code
 
 from ..finding import Finding
+import ast
+
+
+
 
 def check_security(ast_result):
 
@@ -94,5 +98,50 @@ def check_hardcoded_secrets(ast_result):
     return findings
 
 
+def check_sql_injection(ast_result):
+
+    findings = []
+
+    sql_methods = ["execute", "executemany"]
+    # Those are Python methods used to send SQL queries to a database
+
+
+    for call in ast_result.get("function_calls", []):
+        if call["name"] in sql_methods:
+
+            node = call["node"]
+
+            if not node.args:
+                continue
+
+            query = node.args[0] # means the first argument passed to execute(), which should normally be the SQL query.
+
+        # For the f string like: cursor.execute(f"SELECT * FROM users WHERE id = {user_id}")
+        if isinstance(query, ast.JoinedStr):
+            findings.append(
+                Finding(
+                    rule = "security-sql-injection",
+                    message = "Possible SQL injection detected: SQL query executed dynamically",
+                    line = call["line"],
+                    severity = "error",
+                    category = "security"
+                )
+            )
+
+        # ast.BinOp + ast.Add = string concatenation like: cursor.execute("SELECT * FROM users WHERE id = " + user_id)
+        elif isinstance(query, ast.BinOp) and isinstance(query.op, ast.Add):
+            findings.append(
+                Finding(
+                    rule = "security-sql-injection",
+                    message = "Possible SQL injection: SQL query is built using string concatenation",
+                    line = call["line"],
+                    severity = "error",
+                    category = "security"
+                )
+            )
+
+
+
+    return findings
 
 
