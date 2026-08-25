@@ -24,7 +24,20 @@ def check_security(ast_result):
 
         name = call["name"] # get the function name
 
-        if name in dangerous_functions: # if the function in the dangerous functions type
+        if name == "subprocess.run": # If the function is subprocess.run, check whether it uses shell=True. Only then report it.
+        # The reason is that subprocess.run() itself isn't necessarily dangerous. shell=True is the important condition we're checking.
+            if call.get("shell") is True:
+                findings.append(
+                    Finding(
+                        rule = "security-dangerous-call",
+                        message = "Use of subprocess.run() with shell = True can lead to command injection",
+                        line = call["line"],
+                        severity = "error",
+                        category = "security"
+                    )
+                )
+
+        elif name in dangerous_functions: # if the function in the dangerous functions type
             findings.append(
                 Finding(
                     rule = "security-dangerous-call",
