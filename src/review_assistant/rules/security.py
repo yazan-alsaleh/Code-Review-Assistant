@@ -102,7 +102,7 @@ def check_sql_injection(ast_result):
 
     findings = []
 
-    sql_methods = ["execute", "executemany"]
+    sql_methods = ["execute", "executemany", "cursor.execute", "cursor.executemany"]
     # Those are Python methods used to send SQL queries to a database
 
 
@@ -116,29 +116,29 @@ def check_sql_injection(ast_result):
 
             query = node.args[0] # means the first argument passed to execute(), which should normally be the SQL query.
 
-        # For the f string like: cursor.execute(f"SELECT * FROM users WHERE id = {user_id}")
-        if isinstance(query, ast.JoinedStr):
-            findings.append(
-                Finding(
-                    rule = "security-sql-injection",
-                    message = "Possible SQL injection detected: SQL query executed dynamically",
-                    line = call["line"],
-                    severity = "error",
-                    category = "security"
+            # For the f string like: cursor.execute(f"SELECT * FROM users WHERE id = {user_id}")
+            if isinstance(query, ast.JoinedStr):
+                findings.append(
+                    Finding(
+                        rule = "security-sql-injection",
+                        message = "Possible SQL injection detected: SQL query executed dynamically",
+                        line = call["line"],
+                        severity = "error",
+                        category = "security"
+                    )
                 )
-            )
 
-        # ast.BinOp + ast.Add = string concatenation like: cursor.execute("SELECT * FROM users WHERE id = " + user_id)
-        elif isinstance(query, ast.BinOp) and isinstance(query.op, ast.Add):
-            findings.append(
-                Finding(
-                    rule = "security-sql-injection",
-                    message = "Possible SQL injection: SQL query is built using string concatenation",
-                    line = call["line"],
-                    severity = "error",
-                    category = "security"
+            # ast.BinOp + ast.Add = string concatenation like: cursor.execute("SELECT * FROM users WHERE id = " + user_id)
+            elif isinstance(query, ast.BinOp) and isinstance(query.op, ast.Add):
+                findings.append(
+                    Finding(
+                        rule = "security-sql-injection",
+                        message = "Possible SQL injection: SQL query is built using string concatenation",
+                        line = call["line"],
+                        severity = "error",
+                        category = "security"
+                    )
                 )
-            )
 
 
 
