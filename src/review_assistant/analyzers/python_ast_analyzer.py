@@ -85,17 +85,37 @@ class PythonASTAnalyzer: # This class will be responsible for analyzing a Python
                     result["imports"].append(f"{node.module}.{alias.name}")
 
 
-
-
+    
             # for assignments syntax
+
+            # e.g. X = 5
+            # target --> X
+            # value --> "5"
+
             elif isinstance(node, ast.Assign):
                 # looks at the thing being assigned.
                 for target in node.targets:
                     if isinstance(target, ast.Name): # target is the variable (x)
+
+
+
+                        # Try to get the actual value from the AST. 
+                        # If Python can't safely turn it into a normal value, use None instead.
+
+                        # node.value isn't the actual Python string "123456".
+                        # It is an AST object representing that string.
+
+                        try:
+                            # ast.literal_eval() converts simple AST values into their actual Python values.
+                            value = ast.literal_eval(node.value) 
+                        except (ValueError, TypeError):
+                            # if literal_eval fails with a ValueError or TypedError don't crash and set the value to None
+                            value = None
+
                         result["variables"].append({  # target.id gives (x) and store it
                             "name": target.id, # the variable name
                             "line": node.lineno, # the variable line
-                            
+                            "value": value
                         })
 
 
