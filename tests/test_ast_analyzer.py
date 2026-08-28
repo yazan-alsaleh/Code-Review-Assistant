@@ -40,6 +40,9 @@ cursor.execute(
     for finding in findings:
         print(finding)
 
+    
+    
+
 
 if __name__ == "__main__":
     test_hardcoded_secrets()
